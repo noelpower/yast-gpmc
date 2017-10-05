@@ -4,9 +4,7 @@ import uuid
 import os.path
 from subprocess import Popen, PIPE
 
-import ycp
-ycp.import_module('UI')
-from ycp import *
+from yast import UI
 def select_script(title, policy, conn):
     full_path = UI.AskForExistingFile('/', '*.sh *.py *.pl', title)
     if policy == 'comp_scripts_shutdown':
@@ -68,7 +66,7 @@ def iter_scripts_conf(inf_conf, section):
 def iter_quick_links_conf(ins_conf):
     if ins_conf.has_section('URL'):
         for option in ins_conf.options(section):
-            if 'Quick_Link_' in option and '_Name' not in option:
+            if option.startswith('Quick_Link_') and not option.endswith('_Name'):
                 yield option.encode('ascii')
 
 def quick_link_set_option(ins_conf, section, option, v):
